@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// Use relative URL to work with Vite proxy (works on mobile when accessing dev server)
+// In production, set VITE_API_URL environment variable
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 /**
  * Add email to waitlist

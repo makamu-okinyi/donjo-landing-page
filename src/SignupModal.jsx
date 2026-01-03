@@ -37,7 +37,14 @@ export default function SignupModal({ isOpen, onClose, defaultType = null }) {
             }, 2000);
         } catch (err) {
             setIsSubmitting(false);
-            setError(err.message || 'Failed to add to waitlist. Please try again.');
+            // Provide user-friendly error messages
+            if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+                setError('Unable to connect to server. Please check your internet connection and try again.');
+            } else if (err.message.includes('already on the waitlist')) {
+                setError('This email is already on the waitlist.');
+            } else {
+                setError(err.message || 'Failed to add to waitlist. Please try again.');
+            }
         }
     };
 
