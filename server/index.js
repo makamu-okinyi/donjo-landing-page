@@ -34,6 +34,8 @@ app.get('/api/health', (req, res) => {
 // Serve static files from React app in production
 if (NODE_ENV === 'production') {
     const distPath = join(__dirname, '..', 'dist');
+    console.log(`🔍 Looking for dist folder at: ${distPath}`);
+    
     if (existsSync(distPath)) {
         app.use(express.static(distPath));
         
@@ -43,12 +45,31 @@ if (NODE_ENV === 'production') {
             if (req.path.startsWith('/api')) {
                 return res.status(404).json({ error: 'API endpoint not found' });
             }
-            res.sendFile(join(distPath, 'index.html'));
+            const indexPath = join(distPath, 'index.html');
+            if (existsSync(indexPath)) {
+                res.sendFile(indexPath);
+            } else {
+                res.status(500).json({ error: 'Frontend build not found' });
+            }
         });
         
         console.log('📦 Serving production build from dist/');
     } else {
-        console.warn('⚠️  Production mode but dist/ folder not found. Run "npm run build" first.');
+        console.error('❌ Production mode but dist/ folder not found!');
+        console.error('   Expected path:', distPath);
+        console.error('   Current working directory:', process.cwd());
+        console.error('   __dirname:', __dirname);
+        
+        // Still allow API to work even if frontend build is missing
+        app.get('*', (req, res) => {
+            if (req.path.startsWith('/api')) {
+                return res.status(404).json({ error: 'API endpoint not found' });
+            }
+            res.status(500).json({ 
+                error: 'Frontend build not found',
+                message: 'Please run "npm run build" before starting the server'
+            });
+        });
     }
 }
 

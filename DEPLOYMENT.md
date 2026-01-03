@@ -43,13 +43,18 @@ Railway can host both frontend and backend together.
 
 2. **Create a Web Service:**
    - Connect your GitHub repo
-   - Build Command: `npm install && npm run build`
-   - Start Command: `npm run start`
-   - Environment: `Node`
+   - **OR** use the `render.yaml` file (auto-detected)
+   - If manual setup:
+     - Build Command: `npm install && npm run build`
+     - Start Command: `node server/index.js`
+     - Environment: `Node`
+     - Node Version: `18` or higher
 
 3. **Add Environment Variables:**
    - `NODE_ENV=production`
-   - `PORT=10000` (Render uses port 10000)
+   - `PORT=10000` (Render uses port 10000 automatically)
+
+4. **Important:** Make sure the build completes successfully. Check build logs for errors.
 
 4. **Deploy:**
    - Render will build and deploy

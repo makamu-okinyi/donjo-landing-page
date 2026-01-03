@@ -2,8 +2,10 @@ services:
   - type: web
     name: donjo-landing-page
     env: node
+    plan: free
+    region: oregon
     buildCommand: npm install && npm run build
-    startCommand: npm run start
+    startCommand: node server/index.js
     envVars:
       - key: NODE_ENV
         value: production
