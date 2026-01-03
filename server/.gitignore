@@ -1,0 +1,7 @@
+data/
+*.db
+*.db-journal
+*.json
+node_modules/
+.env
+
